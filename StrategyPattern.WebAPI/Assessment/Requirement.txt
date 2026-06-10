@@ -1,0 +1,11 @@
+﻿Question : Build a payment processing system that supports users from different countries.
+Each country has its own tax rules, and these tax rules may change independently of the rest of the system.
+We want the system to easily support new countries or tax logic in the future.
+Design and implement the part of the system that handles tax calculation, making sure it's easy to extend and modify without changing the main business logic.
+
+Help me to Design the system using best design patten, explain which design pattern will be a good choice any why. And also provide sample code using .net core 8
+
+Same Question In Different Way: Design a global payment processing system that supports users across multiple countries. Each country has its own tax regulations, and these rules may evolve independently 
+over time. The system should be flexible enough to accommodate new countries or updated tax logic without impacting existing business functionality.
+Your task is to design and implement the tax calculation component in a way that is extensible, maintainable, and loosely coupled, ensuring that new tax rules can be 
+introduced with minimal changes to the core system.

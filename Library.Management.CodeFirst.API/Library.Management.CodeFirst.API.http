@@ -1,0 +1,6 @@
+@Library.Management.CodeFirst.API_HostAddress = http://localhost:5159
+
+GET {{Library.Management.CodeFirst.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

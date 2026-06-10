@@ -1,0 +1,6 @@
+@CQRS.CRUD.InMemory_HostAddress = http://localhost:5281
+
+GET {{CQRS.CRUD.InMemory_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
