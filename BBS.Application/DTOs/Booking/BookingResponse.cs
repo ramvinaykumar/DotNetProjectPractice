@@ -1,4 +1,4 @@
-﻿namespace BBS.Application.DTOs
+﻿namespace BBS.Application.DTOs.Booking
 {
     public class BookingResponse
     {

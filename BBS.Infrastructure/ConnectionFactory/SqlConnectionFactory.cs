@@ -8,17 +8,22 @@ namespace BBS.Infrastructure.ConnectionFactory
     {
         private readonly IConfiguration _config;
 
-        public SqlConnectionFactory(
-            IConfiguration config)
+        public SqlConnectionFactory(IConfiguration config)
         {
             _config = config;
         }
 
         public IDbConnection CreateConnection()
         {
-            return new SqlConnection(
-                _config.GetConnectionString(
-                    "SqlConnection"));
+            var connectionString = _config.GetConnectionString("DefaultConnection");
+            Console.WriteLine( $"Connection String = {connectionString}");
+
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new InvalidOperationException(  "DefaultConnection not found.");
+            }
+
+            return new SqlConnection(connectionString);
         }
     }
 }

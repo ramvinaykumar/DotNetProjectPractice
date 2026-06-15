@@ -1,6 +1,6 @@
-﻿using BBS.Application.DTOs;
+﻿using BBS.Application.DTOs.Booking;
 
-namespace BBS.Application.Interfaces
+namespace BBS.Application.Interfaces.Services
 {
     public interface IBookingService
     {

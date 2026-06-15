@@ -1,7 +1,7 @@
-﻿using BBS.Application.DTOs;
+﻿using BBS.Application.DTOs.Booking;
 using FluentValidation;
 
-namespace BBS.Application.Validators
+namespace BBS.Application.Validators.Booking
 {
     public class CreateBookingValidator : AbstractValidator<CreateBookingRequest>
     {

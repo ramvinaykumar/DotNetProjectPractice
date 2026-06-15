@@ -1,6 +1,6 @@
 ﻿using BBS.Domain.Entities;
 
-namespace BBS.Application.Interfaces
+namespace BBS.Application.Interfaces.Repositories
 {
     public interface IBookingRepository
     {
