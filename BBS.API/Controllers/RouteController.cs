@@ -20,7 +20,8 @@ namespace BBS.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _service.GetAllAsync());
+            var result = await _service.GetAllAsync();
+            return Success(result, "Operation completed successfully!");
         }
 
         [HttpGet("{id}")]
@@ -52,7 +53,7 @@ namespace BBS.API.Controllers
         {
             await _service.DeleteAsync(id);
 
-            return NoContent();
+            return Success(  "Route deleted successfully.");
         }
     }
 }
