@@ -10,9 +10,9 @@ namespace BBS.Application.DTOs.Bus
     {
         public int BusId { get; set; }
 
-        public string BusNumber { get; set; }
+        public string BusNumber { get; set; } = string.Empty;
 
-        public string BusName { get; set; }
+        public string BusName { get; set; } = string.Empty;
 
         public int TotalSeats { get; set; }
     }

@@ -134,6 +134,10 @@ namespace BBS.Application.Services
             }
 
             var user = await _userRepository.GetByIdAsync(token.UserId);
+            if (user == null)
+            {
+                throw new BusinessException("User not found for the given refresh token!");
+            }
 
             var accessToken = _jwtService.GenerateAccessToken(user);
 

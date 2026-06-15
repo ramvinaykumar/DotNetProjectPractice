@@ -26,7 +26,7 @@ namespace BBS.Application.Services
                 new Claim(  ClaimTypes.Role, user.Role)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:SecretKey"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:SecretKey"] ?? throw new InvalidOperationException("SecretKey missing")));
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

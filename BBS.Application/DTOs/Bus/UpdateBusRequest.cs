@@ -8,9 +8,9 @@ namespace BBS.Application.DTOs.Bus
 {
     public class UpdateBusRequest
     {
-        public string BusNumber { get; set; }
+        public string BusNumber { get; set; } = string.Empty;
 
-        public string BusName { get; set; }
+        public string BusName { get; set; } = string.Empty;
 
         public int TotalSeats { get; set; }
     }

@@ -6,7 +6,7 @@
 
         public int UserId { get; set; }
 
-        public string TokenHash { get; set; }
+        public string TokenHash { get; set; } = string.Empty;
 
         public DateTime ExpiryDate { get; set; }
 

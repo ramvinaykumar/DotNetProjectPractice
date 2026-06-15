@@ -8,21 +8,21 @@
         /// <summary>
         /// UserName is the username of the user attempting to register.
         /// </summary>
-        public string UserName { get; set; }
+        public string UserName { get; set; } = string.Empty;
 
         /// <summary>
         /// Email is the email address of the user attempting to register.
         /// </summary>
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         /// <summary>
         /// Password is the password of the user attempting to register.
         /// </summary>
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
 
         /// <summary>
         /// Role is the role assigned to the user attempting to register, such as "Admin" or "User".
         /// </summary>
-        public string Role { get; set; }
+        public string Role { get; set; } = string.Empty;
     }
 }

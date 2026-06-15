@@ -12,6 +12,6 @@
 
         public DateTime BookingDate { get; set; }
 
-        public string Status { get; set; }
+        public string Status { get; set; } = string.Empty;
     }
 }

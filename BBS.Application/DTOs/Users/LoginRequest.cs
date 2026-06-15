@@ -8,11 +8,11 @@
         /// <summary>
         /// Email is the email address of the user attempting to log in.
         /// </summary>
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         /// <summary>
         /// Password is the password of the user attempting to log in.
         /// </summary>
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
     }
 }
