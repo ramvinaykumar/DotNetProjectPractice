@@ -46,7 +46,11 @@ namespace BBS.API.Middleware
                     {
                         Success = false,
                         Message = "Validation Failed",
-                        Errors = ex.Errors.Select(x => x.ErrorMessage).ToList()
+                        ValidationErrors = ex.Errors
+                            .GroupBy(e => e.PropertyName)
+                            .ToDictionary(
+                                g => g.Key,
+                                g => g.Select(e => e.ErrorMessage).ToArray())
                     });
             }
             catch (BusinessException ex)
@@ -59,12 +63,13 @@ namespace BBS.API.Middleware
                     new ApiResponse<object>
                     {
                         Success = false,
-                        Message = ex.Message
+                        Message = ex.Message,
+                        Errors = [ex.Message]
                     });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Unhandled Exception");
+                _logger.LogError(ex, ex.Message);
 
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
@@ -72,7 +77,7 @@ namespace BBS.API.Middleware
                     new ApiResponse<object>
                     {
                         Success = false,
-                        Message = "An unexpected error occurred."
+                        Message = ex.Message
                     });
             }
         }

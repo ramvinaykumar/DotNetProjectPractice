@@ -4,8 +4,16 @@
     {
         public int BookingId { get; set; }
 
-        public int SeatNumber { get; set; }
+        public int PassengerId { get; set; }
 
-        public string Status { get; set; } = string.Empty;
+        public int ScheduleId { get; set; }
+
+        public int SeatCount { get; set; }
+
+        public decimal TotalAmount { get; set; }
+
+        public string BookingStatus { get; set; } = string.Empty;
+
+        public DateTime BookingDate { get; set; }
     }
 }

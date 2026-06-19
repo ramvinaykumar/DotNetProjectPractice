@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace BBS.Infrastructure.ConnectionFactory
+namespace BBS.Application.Interfaces.Infrastructure
 {
     public interface IDbConnectionFactory
     {

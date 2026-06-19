@@ -1,6 +1,7 @@
 ﻿using BBS.Application.Common;
 using BBS.Application.Validators.Booking;
 using BBS.Application.Validators.Bus;
+using BBS.Application.Validators.Passenger;
 using BBS.Application.Validators.Route;
 using BBS.Application.Validators.Schedule;
 using FluentValidation;
@@ -28,29 +29,36 @@ namespace BBS.API.Extensions
             // Register custom validators here if needed
             // Example: services.AddScoped<IValidator<YourModel>, YourModelValidator>();
 
+            ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
+
             services.AddFluentValidationAutoValidation();
 
             services.AddValidatorsFromAssemblyContaining<CreateBookingValidator>();
             services.AddValidatorsFromAssemblyContaining<CreateBusValidator>();
             services.AddValidatorsFromAssemblyContaining<CreateRouteValidator>();
             services.AddValidatorsFromAssemblyContaining<CreateScheduleValidator>();
+            services.AddValidatorsFromAssemblyContaining<CreatePassengerValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdatePassengerValidator>();
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = context =>
                 {
                     var errors = context.ModelState
-                                    .Values
-                                    .SelectMany(v => v.Errors)
-                                    .Select(e => e.ErrorMessage)
-                                    .ToList();
+                                     .Where(x => x.Value?.Errors.Count > 0)
+                                     .ToDictionary(
+                                        x => char.ToLowerInvariant(x.Key[0]) + x.Key.Substring(1),
+                                        x => x.Value!.Errors
+                                            .Select(e => e.ErrorMessage)
+                                            .ToArray()
+                                     );
 
                     return new BadRequestObjectResult(
                         new ApiResponse<object>
                         {
                             Success = false,
                             Message = "Validation Failed",
-                            Errors = errors
+                            ValidationErrors = errors
                         });
                 };
             });

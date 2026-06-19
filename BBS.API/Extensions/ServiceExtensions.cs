@@ -1,8 +1,11 @@
-﻿using BBS.Application.Interfaces.Repositories;
+﻿using BBS.Application.Commands;
+using BBS.Application.Interfaces.Infrastructure;
+using BBS.Application.Interfaces.Repositories;
 using BBS.Application.Interfaces.Services;
 using BBS.Application.Services;
 using BBS.Infrastructure.ConnectionFactory;
 using BBS.Infrastructure.Repositories;
+using MediatR;
 
 namespace BBS.API.Extensions
 {
@@ -24,6 +27,9 @@ namespace BBS.API.Extensions
             // Register any custom services here
             // Example: services.AddScoped<IYourService, YourService>();
 
+            // Register MediatR for handling commands and queries
+            services.AddMediatR(typeof(CreatePassengerCommand).Assembly);
+
             // Register the connection factory
             services.AddScoped<IDbConnectionFactory, SqlConnectionFactory>();
 
@@ -33,6 +39,7 @@ namespace BBS.API.Extensions
             services.AddScoped<IBusRepository, BusRepository>();
             services.AddScoped<IRouteRepository, RouteRepository>();
             services.AddScoped<IScheduleRepository, ScheduleRepository>();
+            services.AddScoped<IPassengerRepository, PassengerRepository>();
 
             // Register services
             services.AddScoped<IJwtTokenService, JwtTokenService>();

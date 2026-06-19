@@ -2,8 +2,6 @@
 {
     public class UpdateBookingRequest
     {
-        public int SeatNumber { get; set; }
-
-        public string Status { get; set; } = string.Empty;
+        public int SeatCount { get; set; }
     }
 }

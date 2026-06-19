@@ -1,6 +1,6 @@
-﻿namespace BBS.Domain.Entities
+﻿namespace BBS.Application.DTOs.Passenger
 {
-    public class Passenger
+    public class PassengerResponse
     {
         public int PassengerId { get; set; }
 
@@ -14,8 +14,8 @@
 
         public string Gender { get; set; } = string.Empty;
 
-        public DateTime DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; } = string.Empty;
 
-        public bool IsActive { get; set; }
+        public string Active { get; set; } = string.Empty;
     }
 }

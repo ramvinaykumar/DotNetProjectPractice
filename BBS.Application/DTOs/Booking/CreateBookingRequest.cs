@@ -6,6 +6,6 @@
 
         public int PassengerId { get; set; }
 
-        public int SeatNumber { get; set; }
+        public int SeatCount { get; set; }
     }
 }

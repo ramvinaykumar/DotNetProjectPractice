@@ -1,6 +1,6 @@
-﻿using BBS.Application.Interfaces.Repositories;
+﻿using BBS.Application.Interfaces.Infrastructure;
+using BBS.Application.Interfaces.Repositories;
 using BBS.Domain.Entities;
-using BBS.Infrastructure.ConnectionFactory;
 using Dapper;
 
 namespace BBS.Infrastructure.Repositories

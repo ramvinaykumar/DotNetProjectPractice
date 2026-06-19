@@ -1,19 +1,28 @@
 ﻿using BBS.Domain.Entities;
+using System.Data;
 
 namespace BBS.Application.Interfaces.Repositories
 {
+    /// <summary>
+    /// Defines a contract for managing booking entities, including creation, retrieval, update, cancellation, and
+    /// existence checks.
+    /// </summary>
+    /// <remarks>Provides asynchronous operations for handling bookings in a data store, supporting
+    /// transactional operations and duplicate detection.</remarks>
     public interface IBookingRepository
     {
-        Task<int> CreateBookingAsync(Booking booking);
+        Task<int> CreateAsync(Booking booking, IDbConnection connection, IDbTransaction transaction);
 
-        Task<IEnumerable<Booking>> GetAllBookingsAsync();
+        Task<IEnumerable<Booking>> GetAllAsync();
 
-        Task<Booking?> GetBookingByIdAsync(int id);
+        Task<bool> HasDuplicateBookingAsync(int passengerId, int scheduleId);
 
-        Task<Booking?> GetByScheduleAndSeatAsync(int scheduleId, int seatNo);
+        Task<int> UpdateAsync(Booking booking);
 
-        Task<int> UpdateBookingAsync(Booking booking);
+        Task<int> CancelAsync(int bookingId);
 
-        Task<int> DeleteBookingAsync(int id);
+        Task<Booking?> GetByIdAsync(int bookingId);
+
+        Task<bool> ExistsAsync(int bookingId);        
     }
 }

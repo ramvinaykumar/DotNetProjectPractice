@@ -9,6 +9,8 @@ namespace BBS.API.Controllers
     [ApiController]
     public abstract class BaseController : ControllerBase
     {
+        #region Success Responses
+
         /// <summary>
         /// Success response with data and a message.
         /// </summary>
@@ -39,6 +41,10 @@ namespace BBS.API.Controllers
             });
         }
 
+        #endregion
+
+        #region Failure Responses
+
         /// <summary>
         /// Failure response with a message indicating the reason for failure.
         /// </summary>
@@ -49,7 +55,8 @@ namespace BBS.API.Controllers
             return BadRequest(new ApiResponse<object>
             {
                 Success = false,
-                Message = message
+                Message = message,
+                Errors = [message]
             });
         }
 
@@ -58,14 +65,31 @@ namespace BBS.API.Controllers
         /// </summary>
         /// <param name="errors">list of errors</param>
         /// <returns>Returns a list of validation errors, indicating that the request failed due to validation issues.</returns>
-        protected IActionResult Failure(List<string> errors)
+        protected IActionResult Failure(List<string> errors, string message = "Request Failed")
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = message,
+                Errors = errors
+            });
+        }
+
+        /// <summary>
+        /// Generates a BadRequest response containing validation error details.
+        /// </summary>
+        /// <param name="validationErrors">A dictionary mapping field names to their associated validation error messages.</param>
+        /// <returns>A BadRequest result with an ApiResponse object that includes validation error information.</returns>
+        protected IActionResult ValidationFailure(Dictionary<string, string[]> validationErrors)
         {
             return BadRequest(new ApiResponse<object>
             {
                 Success = false,
                 Message = "Validation Failed",
-                Errors = errors
+                ValidationErrors = validationErrors
             });
         }
+
+        #endregion
     }
 }

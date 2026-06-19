@@ -1,6 +1,12 @@
-﻿namespace BBS.Domain.Entities
+﻿using BBS.Application.DTOs.Passenger;
+using MediatR;
+
+namespace BBS.Application.Commands
 {
-    public class Passenger
+    /// <summary>
+    /// Represents a command to update passenger details.
+    /// </summary>
+    public class UpdatePassengerCommand : IRequest<PassengerResponse>
     {
         public int PassengerId { get; set; }
 
@@ -14,8 +20,6 @@
 
         public string Gender { get; set; } = string.Empty;
 
-        public DateTime DateOfBirth { get; set; }
-
-        public bool IsActive { get; set; }
+        public DateTime? DateOfBirth { get; set; }
     }
 }
