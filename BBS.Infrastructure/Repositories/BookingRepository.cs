@@ -72,16 +72,22 @@ namespace BBS.Infrastructure.Repositories
             using var connection = _connectionFactory.CreateConnection();
 
             return await connection.QueryAsync<Booking>(
-                    "SELECT * FROM bbs.Booking WHERE IsCancelled = 0");
+                    "SELECT * FROM bbs.Booking WHERE IsCancelled = 0 ORDER BY BookingDate DESC");
         }
 
-        public async Task<Booking?> GetBookingByIdAsync(int id)
+        /// <summary>
+        /// Asynchronously retrieves a booking by its unique identifier if it is not cancelled.
+        /// </summary>
+        /// <param name="bookingId">The unique identifier of the booking.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the booking if found and not
+        /// cancelled; otherwise, null.</returns>
+        public async Task<Booking?> GetByIdAsync(int bookingId)
         {
             using var connection = _connectionFactory.CreateConnection();
 
-            return await connection
-                .QueryFirstOrDefaultAsync<Booking>("SELECT * FROM bbs.Booking WHERE BookingId=@Id",
-                    new { Id = id });
+            return await connection.QueryFirstOrDefaultAsync<Booking>(
+                "SELECT * FROM bbs.Booking WHERE BookingId=@BookingId AND IsCancelled = 0",
+                    new { BookingId = bookingId });
         }
 
         public async Task<Booking?> GetByScheduleAndSeatAsync(int scheduleId, int seatNo)
@@ -99,26 +105,31 @@ namespace BBS.Infrastructure.Repositories
                             });
         }
 
-        public async Task<int> UpdateBookingAsync(Booking booking)
+        /// <summary>
+        /// Updates an existing booking record in the database with new details, such as seat count and total amount, while
+        /// </summary>
+        /// <param name="bookingId">The unique identifier of the booking to cancel.</param>
+        /// <param name="connection">The open database connection used to execute the operation.</param>
+        /// <param name="transaction">The database transaction within which the operation is executed.</param>
+        /// <returns>The number of rows affected by the update.</returns>
+        public async Task<int> UpdateAsync(Booking booking, IDbConnection connection, IDbTransaction transaction)
         {
-            using var connection = _connectionFactory.CreateConnection();
+            const string sql = @" UPDATE bbs.Booking
+                                     SET SeatCount=@SeatCount,
+                                         TotalAmount=@TotalAmount,
+                                         ModifiedDate=@ModifiedDate,
+                                         ModifiedBy=@ModifiedBy
+                                   WHERE BookingId=@BookingId";
 
-            return await connection.ExecuteAsync(
-                                @"UPDATE bbs.Booking
-                                     SET SeatNumber=@SeatNumber,
-                                         Status=@Status
-                                   WHERE BookingId=@BookingId", booking);
+            return await connection.ExecuteAsync(sql, booking, transaction);
         }
 
-        public async Task<int> DeleteBookingAsync(int id)
-        {
-            using var connection = _connectionFactory.CreateConnection();
-
-            return await connection.ExecuteAsync(
-                "DELETE FROM bbs.Booking WHERE BookingId=@Id",
-                new { Id = id });
-        }
-
+        /// <summary>
+        /// Determines whether a non-cancelled booking exists for the specified passenger and schedule.
+        /// </summary>
+        /// <param name="passengerId">The identifier of the passenger.</param>
+        /// <param name="scheduleId">The identifier of the schedule.</param>
+        /// <returns>True if a duplicate booking exists; otherwise, false.</returns>
         public async Task<bool> HasDuplicateBookingAsync(int passengerId, int scheduleId)
         {
             using var connection = _connectionFactory.CreateConnection();
@@ -140,27 +151,34 @@ namespace BBS.Infrastructure.Repositories
             return count > 0;
         }
 
-        public Task<int> Cr44eateAsync(Booking booking, IDbConnection connection, IDbTransaction transaction)
+        /// <summary>
+        /// Cancels a booking by updating its status to 'Cancelled' in the database.
+        /// </summary>
+        /// <param name="bookingId">The unique identifier of the booking to cancel.</param>
+        /// <param name="connection">The open database connection used to execute the operation.</param>
+        /// <param name="transaction">The database transaction within which the operation is executed.</param>
+        /// <returns>The number of rows affected by the update.</returns>
+        public async Task<int> CancelAsync(int bookingId, IDbConnection connection, IDbTransaction transaction)
         {
-            throw new NotImplementedException();
+            const string sql = @"UPDATE bbs.Booking
+                                    SET BookingStatus = 'Cancelled', IsCancelled = 1, ModifiedDate = GETUTCDATE()
+                                  WHERE BookingId=@BookingId";
+
+            return await connection.ExecuteAsync(
+                sql,
+                new
+                {
+                    BookingId = bookingId
+                },
+                transaction);
         }
 
-        public Task<int> UpdateAsync(Booking booking)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> CancelAsync(int bookingId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Booking?> GetByIdAsync(int bookingId)
-        {
-            throw new NotImplementedException();
-        }
-        
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bookingId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public Task<bool> ExistsAsync(int bookingId)
         {
             throw new NotImplementedException();

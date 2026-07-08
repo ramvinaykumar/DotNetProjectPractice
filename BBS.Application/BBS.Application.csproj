@@ -21,8 +21,4 @@
     <ProjectReference Include="..\BBS.Domain\BBS.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ResponseModel\" />
-  </ItemGroup>
-
 </Project>

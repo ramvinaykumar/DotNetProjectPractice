@@ -67,6 +67,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolidPrinciple", "SolidPrin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidPrinciple", "SolidPrinciple\SolidPrinciple.csproj", "{1069714C-607E-4633-8D14-0F5B5C6B11D0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FactoryPattern", "FactoryPattern", "{A2862586-4DB3-4960-BD99-0BF14C285745}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaFactoryApi", "PizzaFactoryApi\PizzaFactoryApi.csproj", "{B2B8AEA6-5653-47C5-8D59-0C9A0EB90A42}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,6 +145,10 @@ Global
 		{1069714C-607E-4633-8D14-0F5B5C6B11D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1069714C-607E-4633-8D14-0F5B5C6B11D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1069714C-607E-4633-8D14-0F5B5C6B11D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2B8AEA6-5653-47C5-8D59-0C9A0EB90A42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2B8AEA6-5653-47C5-8D59-0C9A0EB90A42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2B8AEA6-5653-47C5-8D59-0C9A0EB90A42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2B8AEA6-5653-47C5-8D59-0C9A0EB90A42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -171,6 +179,7 @@ Global
 		{5D56797B-8400-4D98-8540-B0ED3FE9C80F} = {536E8A50-B8E1-4B7A-A197-5ACF170E3534}
 		{B76AEC9A-FA2D-4D0F-8B37-645975AB0170} = {11EB3824-1AD9-44A7-8F85-51CC2BC43071}
 		{1069714C-607E-4633-8D14-0F5B5C6B11D0} = {20396AE1-4D60-4360-BFDC-08E43CAF067F}
+		{B2B8AEA6-5653-47C5-8D59-0C9A0EB90A42} = {A2862586-4DB3-4960-BD99-0BF14C285745}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EAFACEC0-AAF3-42EC-AD1D-1F98CA1A8C6F}

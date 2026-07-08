@@ -181,36 +181,146 @@ namespace BBS.Application.Services
             });
         }
 
-        //public async Task UpdateBookingAsync(int id, UpdateBookingRequest request)
-        //{
-        //    var booking = await _repository
-        //            .GetBookingByIdAsync(id);
+        /// <summary>
+        /// Retrieves booking information by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the booking.</param>
+        /// <returns>An IActionResult containing the booking data and a success message.</returns>
+        /// <exception cref="BusinessException"></exception>
+        public async Task<BookingResponse> GetByIdAsync(int bookingId)
+        {
+            var booking = await _bookingRepository.GetByIdAsync(bookingId);
+            if (booking == null)
+                throw new BusinessException("Booking not found");
 
-        //    if (booking == null)
-        //        throw new BusinessException("Booking not found");
+            return new BookingResponse
+            {
+                BookingId = booking.BookingId,
+                PassengerId = booking.PassengerId,
+                ScheduleId = booking.ScheduleId,
+                SeatCount = booking.SeatCount,
+                TotalAmount = booking.TotalAmount,
+                BookingStatus = booking.BookingStatus,
+                BookingDate = booking.BookingDate
+            };
+        }
 
-        //    booking.SeatNumber = request.SeatCount;
-        //    booking.Status = request.Status;
+        /// <summary>
+        /// Updates an existing booking with the specified details.
+        /// </summary>
+        /// <param name="id">The unique identifier of the booking to update.</param>
+        /// <param name="request">The updated booking details.</param>
+        /// <returns>A response containing the updated booking information.</returns>
+        /// <exception cref="BusinessException">Thrown when the booking or schedule is not found, or when the requested seats are not available.</exception>
+        public async Task<BookingResponse> UpdateBookingAsync(int id, UpdateBookingRequest request)
+        {
+            var booking = await _bookingRepository.GetByIdAsync(id);
 
-        //    await _repository.UpdateBookingAsync(booking);
-        //}
+            if (booking == null)
+                throw new BusinessException("Booking not found");
 
-        //public async Task DeleteBookingAsync(int id)
-        //{
-        //    await _repository.DeleteBookingAsync(id);
-        //}
+            var schedule = await _scheduleRepository.GetByIdAsync(booking.ScheduleId);
 
-        //public async Task<BookingResponse> GetBookingByIdAsync(int id)
-        //{
-        //    var booking = await _repository.GetBookingByIdAsync(id);
-        //    if (booking == null)
-        //        throw new BusinessException("Booking not found");
-        //    return new BookingResponse
-        //    {
-        //        BookingId = booking.BookingId,
-        //        SeatNumber = booking.SeatNumber,
-        //        Status = booking.Status
-        //    };
-        //}
+            if (schedule == null)
+                throw new BusinessException("Schedule not found");
+
+            using var connection = _connectionFactory.CreateConnection();
+
+            connection.Open();
+
+            using var transaction = connection.BeginTransaction();
+
+            try
+            {
+                if (booking.BookingStatus == BookingStatus.Cancelled)
+                {
+                    throw new BusinessException("Cancelled bookings cannot be updated.");
+                }
+
+                int seatDifference = booking.SeatCount - request.SeatCount;
+
+                if (schedule.AvailableSeats + seatDifference < 0)
+                {
+                    throw new BusinessException("Requested seats are not available.");
+                }
+
+                booking.SeatCount = request.SeatCount;
+                booking.TotalAmount = request.SeatCount * schedule.Fare;
+                booking.ModifiedDate = DateTime.UtcNow;
+                booking.ModifiedBy = "SYSTEM";
+
+                await _bookingRepository.UpdateAsync(booking, connection, transaction);
+
+                await _scheduleRepository.UpdateAvailableSeatsAsync(booking.ScheduleId, seatDifference, connection, transaction);
+
+                transaction.Commit();
+
+                return new BookingResponse
+                {
+                    BookingId = booking.BookingId,
+                    PassengerId = booking.PassengerId,
+                    ScheduleId = booking.ScheduleId,
+                    SeatCount = booking.SeatCount,
+                    TotalAmount = booking.TotalAmount,
+                    BookingStatus = booking.BookingStatus,
+                    BookingDate = booking.BookingDate
+                };
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Cancels the booking with the specified identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the booking to cancel.</param>
+        /// <returns>An IActionResult indicating the outcome of the cancellation.</returns>
+        /// <exception cref="BusinessException"></exception>
+        public async Task CancelAsync(int bookingId)
+        {
+            var booking = await _bookingRepository.GetByIdAsync(bookingId);
+
+            if (booking == null)
+            {
+                throw new BusinessException("Booking not found.");
+            }
+
+            if (booking.BookingStatus == BookingStatus.Cancelled)
+            {
+                throw new BusinessException("Booking already cancelled.");
+            }
+
+            using var connection = _connectionFactory.CreateConnection();
+
+            connection.Open();
+
+            using var transaction = connection.BeginTransaction();
+
+            try
+            {
+                await _bookingRepository.CancelAsync(
+                        bookingId,
+                        connection,
+                        transaction);
+
+                await _scheduleRepository.UpdateAvailableSeatsAsync(
+                        booking.ScheduleId,
+                        booking.SeatCount,
+                        connection,
+                        transaction);
+
+                transaction.Commit();
+
+                _logger.LogInformation("Booking {BookingId} cancelled.", bookingId);
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
     }
 }

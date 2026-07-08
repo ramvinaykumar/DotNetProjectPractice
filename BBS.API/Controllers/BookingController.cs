@@ -1,5 +1,6 @@
 ﻿using BBS.Application.DTOs.Booking;
 using BBS.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BBS.API.Controllers
@@ -40,6 +41,7 @@ namespace BBS.API.Controllers
         /// <param name="request">CreateBookingRequest request</param>
         /// <returns>An IActionResult containing the newly added of bookings and a success message.</returns>
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(CreateBookingRequest request)
         {
             var result = await _service.CreateAsync(request);
@@ -47,27 +49,45 @@ namespace BBS.API.Controllers
             return Success(result, "Booking created successfully.");
         }
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Update(int id, UpdateBookingRequest request)
-        //{
-        //    await _service.UpdateBookingAsync(id, request);
+        /// <summary>
+        /// Retrieves booking information by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the booking.</param>
+        /// <returns>An IActionResult containing the booking data and a success message.</returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var data = await _service.GetByIdAsync(id);
+            return Success(data, "Booking data fetched successfully!");
+        }
 
-        //    return NoContent();
-        //}
+        /// <summary>
+        /// Updates an existing booking with the specified information.
+        /// </summary>
+        /// <param name="id">The unique identifier of the booking to update.</param>
+        /// <param name="request">The updated booking details.</param>
+        /// <returns>An IActionResult containing the result of the update operation.</returns>
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Update(int id, UpdateBookingRequest request)
+        {
+            var result = await _service.UpdateBookingAsync(id, request);
 
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    await _service.DeleteBookingAsync(id);
+            return Success(result, "Booking updated successfully.");
+        }
 
-        //    return NoContent();
-        //}
+        /// <summary>
+        /// Cancels the booking with the specified identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the booking to cancel.</param>
+        /// <returns>An IActionResult indicating the outcome of the cancellation.</returns>
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            await _service.CancelAsync(id);
 
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetById(int id)
-        //{
-        //    var data = await _service.GetBookingByIdAsync(id);
-        //    return Ok(data);
-        //}
+            return Success("Booking cancelled successfully.");
+        }
     }
 }
