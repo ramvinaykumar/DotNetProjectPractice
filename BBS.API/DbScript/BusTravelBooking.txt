@@ -1,0 +1,174 @@
+﻿USE [PracticeDb]
+GO
+/****** Object:  Schema [bbs]    Script Date: 13-07-2026 13:52:39 ******/
+CREATE SCHEMA [bbs]
+GO
+/****** Object:  Table [bbs].[Booking]    Script Date: 13-07-2026 13:52:39 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [bbs].[Booking](
+	[BookingId] [int] IDENTITY(1,1) NOT NULL,
+	[ScheduleId] [int] NOT NULL,
+	[PassengerId] [int] NOT NULL,
+	[SeatCount] [int] NOT NULL,
+	[TotalAmount] [decimal](18, 0) NOT NULL,
+	[BookingStatus] [varchar](20) NOT NULL,
+	[BookingDate] [datetime] NOT NULL,
+	[IsCancelled] [bit] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[CreatedBy] [varchar](100) NOT NULL,
+	[UpdatedDate] [datetime] NULL,
+	[UpdatedBy] [varchar](100) NULL,
+ CONSTRAINT [PK__Booking__73951AEDA786FDEE] PRIMARY KEY CLUSTERED 
+(
+	[BookingId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [bbs].[Bus]    Script Date: 13-07-2026 13:52:39 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [bbs].[Bus](
+	[BusId] [int] IDENTITY(1,1) NOT NULL,
+	[BusNumber] [varchar](20) NOT NULL,
+	[BusName] [varchar](100) NOT NULL,
+	[TotalSeats] [int] NOT NULL,
+	[CreatedDate] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[BusId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [bbs].[BusSchedule]    Script Date: 13-07-2026 13:52:39 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [bbs].[BusSchedule](
+	[ScheduleId] [int] IDENTITY(1,1) NOT NULL,
+	[BusId] [int] NULL,
+	[RouteId] [int] NULL,
+	[DepartureTime] [datetime] NULL,
+	[ArrivalTime] [datetime] NULL,
+	[Fare] [decimal](10, 2) NULL,
+	[TotalSeats] [int] NOT NULL,
+	[AvailableSeats] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ScheduleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [bbs].[Passenger]    Script Date: 13-07-2026 13:52:39 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [bbs].[Passenger](
+	[PassengerId] [int] IDENTITY(1,1) NOT NULL,
+	[FirstName] [varchar](100) NOT NULL,
+	[LastName] [varchar](100) NOT NULL,
+	[Email] [varchar](150) NOT NULL,
+	[PhoneNumber] [varchar](20) NOT NULL,
+	[Gender] [varchar](20) NOT NULL,
+	[DateOfBirth] [date] NOT NULL,
+	[IsActive] [bit] NOT NULL,
+ CONSTRAINT [PK__Passenge__88915FB0DFC9B4A6] PRIMARY KEY CLUSTERED 
+(
+	[PassengerId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [bbs].[RefreshToken]    Script Date: 13-07-2026 13:52:39 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [bbs].[RefreshToken](
+	[RefreshTokenId] [int] IDENTITY(1,1) NOT NULL,
+	[UserId] [int] NULL,
+	[TokenHash] [varchar](max) NULL,
+	[ExpiryDate] [datetime] NULL,
+	[IsRevoked] [bit] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[RefreshTokenId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [bbs].[Route]    Script Date: 13-07-2026 13:52:39 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [bbs].[Route](
+	[RouteId] [int] IDENTITY(1,1) NOT NULL,
+	[SourceCity] [varchar](100) NULL,
+	[DestinationCity] [varchar](100) NULL,
+	[DistanceKM] [decimal](10, 2) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[RouteId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [bbs].[Users]    Script Date: 13-07-2026 13:52:39 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [bbs].[Users](
+	[UserId] [int] IDENTITY(1,1) NOT NULL,
+	[UserName] [varchar](100) NULL,
+	[Email] [varchar](200) NULL,
+	[PasswordHash] [varchar](max) NULL,
+	[Role] [varchar](50) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+ALTER TABLE [bbs].[Bus] ADD  DEFAULT (getdate()) FOR [CreatedDate]
+GO
+ALTER TABLE [bbs].[BusSchedule] ADD  DEFAULT ((40)) FOR [TotalSeats]
+GO
+ALTER TABLE [bbs].[BusSchedule] ADD  DEFAULT ((40)) FOR [AvailableSeats]
+GO
+ALTER TABLE [bbs].[Passenger] ADD  CONSTRAINT [DF_Passenger_FirstName]  DEFAULT ('') FOR [FirstName]
+GO
+ALTER TABLE [bbs].[Passenger] ADD  CONSTRAINT [DF_Passenger_LastName]  DEFAULT ('') FOR [LastName]
+GO
+ALTER TABLE [bbs].[Passenger] ADD  CONSTRAINT [DF_Passenger_Email]  DEFAULT ('') FOR [Email]
+GO
+ALTER TABLE [bbs].[Passenger] ADD  CONSTRAINT [DF_Passenger_PhoneNumber]  DEFAULT ('') FOR [PhoneNumber]
+GO
+ALTER TABLE [bbs].[Passenger] ADD  CONSTRAINT [DF_Passenger_IsActive]  DEFAULT ((1)) FOR [IsActive]
+GO
+ALTER TABLE [bbs].[Booking]  WITH CHECK ADD  CONSTRAINT [FK__Booking__Passeng__1D7B6025] FOREIGN KEY([PassengerId])
+REFERENCES [bbs].[Passenger] ([PassengerId])
+GO
+ALTER TABLE [bbs].[Booking] CHECK CONSTRAINT [FK__Booking__Passeng__1D7B6025]
+GO
+ALTER TABLE [bbs].[Booking]  WITH CHECK ADD  CONSTRAINT [FK__Booking__Schedul__1C873BEC] FOREIGN KEY([ScheduleId])
+REFERENCES [bbs].[BusSchedule] ([ScheduleId])
+GO
+ALTER TABLE [bbs].[Booking] CHECK CONSTRAINT [FK__Booking__Schedul__1C873BEC]
+GO
+ALTER TABLE [bbs].[BusSchedule]  WITH CHECK ADD FOREIGN KEY([BusId])
+REFERENCES [bbs].[Bus] ([BusId])
+GO
+ALTER TABLE [bbs].[BusSchedule]  WITH CHECK ADD FOREIGN KEY([RouteId])
+REFERENCES [bbs].[Route] ([RouteId])
+GO
+ALTER TABLE [bbs].[BusSchedule]  WITH CHECK ADD FOREIGN KEY([RouteId])
+REFERENCES [bbs].[Route] ([RouteId])
+GO
+ALTER TABLE [bbs].[RefreshToken]  WITH CHECK ADD FOREIGN KEY([UserId])
+REFERENCES [bbs].[Users] ([UserId])
+GO
