@@ -21,4 +21,8 @@
     <ProjectReference Include="..\BBS.Domain\BBS.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Reports\" />
+  </ItemGroup>
+
 </Project>

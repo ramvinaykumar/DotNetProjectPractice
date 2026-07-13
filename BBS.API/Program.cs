@@ -1,9 +1,12 @@
 using BBS.API.Extensions;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Core Framework - Controllers, Middleware, etc.
 builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(
+        option=> option.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull);
 
 // Authentication & Authorization - JWT Authentication
 builder.Services.AddJwtAuthentication(builder.Configuration);
