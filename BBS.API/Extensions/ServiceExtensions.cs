@@ -1,11 +1,14 @@
 ﻿using BBS.Application.Commands;
 using BBS.Application.Interfaces.Infrastructure;
 using BBS.Application.Interfaces.Repositories;
+using BBS.Application.Interfaces.Repositories.Journey;
 using BBS.Application.Interfaces.Repositories.Reports;
 using BBS.Application.Interfaces.Services;
 using BBS.Application.Services;
+using BBS.Application.Services.Journey;
 using BBS.Infrastructure.ConnectionFactory;
 using BBS.Infrastructure.Repositories;
+using BBS.Infrastructure.Repositories.Journey;
 using BBS.Infrastructure.Repositories.Reports;
 using MediatR;
 
@@ -43,6 +46,7 @@ namespace BBS.API.Extensions
             services.AddScoped<IScheduleRepository, ScheduleRepository>();
             services.AddScoped<IPassengerRepository, PassengerRepository>();
             services.AddScoped<IRouteSeatAvailabilityRepository, RouteSeatAvailabilityRepository>();
+            services.AddScoped<IJourneyRepository, JourneyRepository>();
 
             // Register services
             services.AddScoped<IJwtTokenService, JwtTokenService>();
@@ -52,6 +56,7 @@ namespace BBS.API.Extensions
             services.AddScoped<IRouteService, RouteService>();
             services.AddScoped<IScheduleService, ScheduleService>();
             services.AddScoped<IRouteSeatAvailabilityService, RouteSeatAvailabilityService>();
+            services.AddScoped<IJourneyService, JourneyService>();
 
             return services;
         }

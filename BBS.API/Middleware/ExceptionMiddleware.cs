@@ -63,7 +63,8 @@ namespace BBS.API.Middleware
                     new ApiResponse<object>
                     {
                         Success = false,
-                        Message = ex.Message,
+                        Message = "Business rule validation failed.",
+                        ErrorCode = ex.ErrorCode,
                         Errors = [ex.Message]
                     });
             }

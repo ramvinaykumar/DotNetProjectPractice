@@ -25,6 +25,11 @@ namespace BBS.Application.Common
         public T? Data { get; set; }
 
         /// <summary>
+        /// Error code associated with the response, if any. This can be used to identify specific error conditions.
+        /// </summary>
+        public string? ErrorCode { get; set; }
+
+        /// <summary>
         /// Gets or sets a collection of error messages.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -35,6 +40,6 @@ namespace BBS.Application.Common
         /// values.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public Dictionary<string, string[]>? ValidationErrors { get; set; }
+        public Dictionary<string, string[]>? ValidationErrors { get; set; }        
     }
 }

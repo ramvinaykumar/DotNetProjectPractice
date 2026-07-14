@@ -2,6 +2,9 @@
 
 namespace BBS.Application.Interfaces.Repositories
 {
+    /// <summary>
+    /// Interface for the route repository.
+    /// </summary>
     public interface IRouteRepository
     {
         Task<int> CreateAsync(Route route);
@@ -13,5 +16,7 @@ namespace BBS.Application.Interfaces.Repositories
         Task<int> UpdateAsync(Route route);
 
         Task<int> DeleteAsync(int routeId);
+
+        Task<Route?> GetBySourceAndDestinationAsync(string source, string destination);
     }
 }
